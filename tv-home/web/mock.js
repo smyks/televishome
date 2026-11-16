@@ -54,7 +54,7 @@
   // ---------- the settings config.js would carry ----------
   var NAMES = ["Alex", "Sam", "Jordan", "Riley", "Casey", "Morgan", "Taylor", "Jamie"];
   var cfg = { weather: { lat: -33.8688, lon: 151.2093, place: "Sydney", timezone: "Australia/Sydney" },
-    default_tv: "living-room", tvs: [{ id: "living-room", name: "Living room" }], home: {} };
+    default_tv: "living-room", tvs: [{ id: "living-room", name: "Living room" }], home: { look: "bento" } };
   var n = arg("people");
   if (n !== null) {
     cfg.people = NAMES.slice(0, Math.max(0, Math.min(8, parseInt(n, 10) || 0))).map(function (name) {

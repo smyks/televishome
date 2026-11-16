@@ -1512,11 +1512,6 @@
     ai = 0;
     zone = "updask";
     clearFocus();
-    if (BENTO && zone === "binputs") {
-      if (window.BentoTheme) window.BentoTheme.focusInput(window.BentoTheme.getInputIdx());
-      hero(null);
-      return;
-    }
     renderAsk();
   }
   function devExtend() {
@@ -2043,11 +2038,6 @@
     if (expanded) { expanded = false; renderGrid(); }
     zone = "grid";
     clearFocus();
-    if (BENTO && zone === "binputs") {
-      if (window.BentoTheme) window.BentoTheme.focusInput(window.BentoTheme.getInputIdx());
-      hero(null);
-      return;
-    }
   }
   // the PIN was right: this TV moves to the first grown up (the bridge checks the PIN again)
   function kidsUnlocked(kid, code) {
@@ -2785,11 +2775,6 @@
     if (zone === "smart") { window.smartHome.paint(); return; }
     if (zone === "ambient") { renderAmbientMusic(); return; }
     clearFocus();
-    if (BENTO && zone === "binputs") {
-      if (window.BentoTheme) window.BentoTheme.focusInput(window.BentoTheme.getInputIdx());
-      hero(null);
-      return;
-    }
     renderHint();
     if (npVisible()) renderNp();   // its buttons carry the focus only while zone is "np"
     if (zone === "gear") { if (gridEls[g]) gridEls[g].classList.add("focus"); renderGear(); return; }
@@ -3358,13 +3343,10 @@
     if (window.AmbientWeather) window.AmbientWeather.pause();
     SET.col = "secs"; SET.sec = 0; SET.ri = 0; SET.keyFocus = null; SET.sub = null; SET.lift = null; SET.confirm = null; SET.msg = "";
     clearFocus();
-    if (BENTO && zone === "binputs") {
-      if (window.BentoTheme) window.BentoTheme.focusInput(window.BentoTheme.getInputIdx());
-      hero(null);
-      return;
-    }
     $("settings").classList.add("on");
     document.documentElement.classList.add("setting");
+    window.openSettings = openSettings;
+    window.openSleepMenu = openMenu;
     renderSettings();
   }
   // Closing starts the page again when anything changed, so the look, scenes and words all agree.
@@ -3553,7 +3535,7 @@
     var look = lookSetting(), st = sceneState(), rows = [head(t("look_head"))];
     ["bento", "night", "oled", "classic"].forEach(function (id) {
       rows.push({ kind: "choice", key: "look:" + id, label: t("look_" + id), sub: t("look_" + id + "_sub"), checked: look === id,
-        act: function () { ST.look = id; keep("tvhome.look", id); saveSettings(); } });
+        act: function () { ST.look = id; keep("tvhome.look", id); saveSettings(); restart(); } });
     });
     if (look === "classic") {
       rows.push({ kind: "toggle", key: "keep-photo", label: t("keep_photo"), sub: t("keep_photo_sub"), value: KEEP_PHOTO ? t("on") : t("off"), act: function () {
@@ -4101,11 +4083,6 @@
     askKind = "upd";
     zone = "updask"; ai = 0;
     clearFocus();
-    if (BENTO && zone === "binputs") {
-      if (window.BentoTheme) window.BentoTheme.focusInput(window.BentoTheme.getInputIdx());
-      hero(null);
-      return;
-    }
     renderAsk();
   }
   function askRows() {
@@ -4176,11 +4153,6 @@
     if (homeState() !== "ask") return;
     askKind = "home"; zone = "updask"; ai = 0;
     clearFocus();
-    if (BENTO && zone === "binputs") {
-      if (window.BentoTheme) window.BentoTheme.focusInput(window.BentoTheme.getInputIdx());
-      hero(null);
-      return;
-    }
     renderAsk();
   }
   function homeAnswered(held) {
@@ -4997,7 +4969,7 @@
 
   if (MOCK || PREVIEW) {
     var sc = document.createElement("script");
-    sc.src = "mock.js";
+    sc.src = "mock.js?t=1731773000";
     sc.onload = start;
     document.head.appendChild(sc);
   } else {

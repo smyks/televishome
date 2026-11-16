@@ -26,7 +26,7 @@
     { "id": "kids", "name": "Kids", "kid": true }
   ],
   "home": {
-    "look": "night",
+    "look": "bento",
     "scenes": ["night", "golden", "water", "fog", "dawn"],
     "scene_seconds": 20,
     "dock_size": 10,

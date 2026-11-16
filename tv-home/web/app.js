@@ -1594,7 +1594,7 @@
         el.innerHTML = ICONS.picture + "<span>" + esc(picLabel()) + "</span>";
         el.classList.toggle("off", !picCanSet);
       } else if (q === "look") {
-        var nextLbl = THEME === "night" ? t("oled_look") : (THEME === "oled" ? t("classic_look") : t("night_look"));
+        var nextLbl = THEME === "bento" ? t("night_look") : (THEME === "night" ? t("oled_look") : (THEME === "oled" ? t("classic_look") : t("bento_look")));
         el.innerHTML = ICONS.look + "<span>" + esc(nextLbl) + "</span>";
       } else if (q === "soundscape") {
         var curSound = window.Soundscape ? window.Soundscape.current() : "off";
@@ -1684,9 +1684,10 @@
   }
   // The look is kept on this TV; the page starts again in the other look.
   function toggleLook() {
-    if (THEME === "night") ST.look = "oled";
+    if (THEME === "bento") ST.look = "night";
+    else if (THEME === "night") ST.look = "oled";
     else if (THEME === "oled") ST.look = "classic";
-    else ST.look = "night";
+    else ST.look = "bento";
     keep("tvhome.look", ST.look);
     saveSettings();
     restart();
@@ -3550,7 +3551,7 @@
   var SECS_STEPS = [10, 15, 20, 30, 45, 60, 120];
   function lookRows() {
     var look = lookSetting(), st = sceneState(), rows = [head(t("look_head"))];
-    ["night", "oled", "classic"].forEach(function (id) {
+    ["bento", "night", "oled", "classic"].forEach(function (id) {
       rows.push({ kind: "choice", key: "look:" + id, label: t("look_" + id), sub: t("look_" + id + "_sub"), checked: look === id,
         act: function () { ST.look = id; keep("tvhome.look", id); saveSettings(); } });
     });

@@ -67,6 +67,7 @@
     sleep_timer: "Sleep timer",
     switching: "Switching…",
     picture_mode: "Picture mode",
+    bento_look: "Ambient Bento",
     classic_look: "Classic look",
     oled_look: "OLED Cinema look",
     night_look: "Night look",

@@ -61,7 +61,7 @@
   var MAX_PHOTOS = 50;
   var ON_TV = false;   // served by the on-TV app (config "mode"), which can open the TV's own settings screens
   // The look: ?theme= for a preview, then Home settings (or the Look button) on this TV, then home.look.
-  var THEME = "night", NIGHT = true, OLED = false, CLOCK24 = false;
+  var THEME = "bento", BENTO = true, NIGHT = false, OLED = false, CLOCK24 = false;
   // OLED burn-in protection: micro-shift (±2px) every 60 seconds in the OLED look. The Smart Idle
   // ambient clock uses wider steps (±4px) while it is on screen.
   var OLED_SHIFT_STEPS = [[0,0], [1,1], [-1,1], [2,-1], [-1,-1], [1,-2], [-2,0], [0,1]];
@@ -385,10 +385,13 @@
     QUICK = (Array.isArray(ST.quick) ? ST.quick : TVCFG.quick || ["sleep", "picture"])
       .filter(function (q, i, a) { return QUICK_ALL.indexOf(q) >= 0 && a.indexOf(q) === i; });
     THEME = (Q.match(/[?&]theme=([a-z]+)/) || [])[1] || lookSetting();
-    if (THEME !== "classic" && THEME !== "oled") THEME = "night";
+    if (THEME !== "classic" && THEME !== "oled" && THEME !== "night") THEME = "bento";
+    BENTO = THEME === "bento";
     NIGHT = THEME === "night";
     OLED = THEME === "oled";
     document.documentElement.classList.toggle("theme-night", NIGHT);
+    document.documentElement.classList.toggle("theme-bento", BENTO);
+    if (BENTO && window.BentoTheme) window.BentoTheme.init();
     document.documentElement.classList.toggle("theme-oled", OLED);
     GLASS = glassSetting();
     document.documentElement.classList.toggle("glass", GLASS !== "off");
@@ -441,8 +444,8 @@
     newApps = kept("tvhome.apps.new") || [];
   }
   function lookSetting() {
-    var l = ST.look || kept("tvhome.look") || HOME.look || "night";
-    return (l === "classic" || l === "oled") ? l : "night";
+    var l = ST.look || kept("tvhome.look") || HOME.look || "bento";
+    return (l === "classic" || l === "oled" || l === "night") ? l : "bento";
   }
   function glassAmount() {
     var n = parseInt(ST.glass_amount != null ? ST.glass_amount : HOME.glass_amount, 10);
@@ -609,7 +612,7 @@
   }
 
   function showPhoto() {
-    if (NIGHT) { $("place").textContent = ""; return; }   // the scenes carry their own photos
+    if (NIGHT || BENTO) { $("place").textContent = ""; return; }   // the scenes carry their own photos
     if (KEEP_PHOTO) { var at = pickedPhoto(); if (at >= 0) photo = at; }
     var list = classicPhotos(), p = list[photo % list.length];
     setBg(p.src || bgPath(p.file, ".jpg"), false);
@@ -648,7 +651,8 @@
     if (iov) iov.classList.toggle("quiet-hours", isQuietHours(SMART_IDLE.quiet_hours));
     fitDate();
     document.body.classList.toggle("night", h >= 21 || h < 6);
-    if (NIGHT) { glassClock(hm); if (SUN_SYNC) applySunSync(); updateAmbientWeather(); }
+    if (NIGHT || BENTO) { glassClock(hm); if (SUN_SYNC) applySunSync(); updateAmbientWeather(); }
+    if (BENTO && window.BentoTheme) { window.BentoTheme.updateStage(); window.BentoTheme.updateCelestial(); }
     if (quickReady) renderQuick();
   }
 
@@ -1063,7 +1067,7 @@
   // The bridge's reading for the place in config.json, or straight from Open-Meteo with no bridge
   // or when Home settings chose another place. Hidden when Home settings switched the weather off.
   function refreshWeather() {
-    if (!NIGHT || !WX_SHOW) {
+    if ((!NIGHT && !BENTO) || !WX_SHOW) {
       updateAmbientWeather();
       return Promise.resolve();
     }
@@ -1304,7 +1308,7 @@
   function renderNp() {
     var el = $("np"), on = npVisible();
     el.classList.toggle("on", on);
-    if (NIGHT) {
+    if (NIGHT || BENTO) {
       // the row shows while someone has a show on the go, or while a song plays
       var anyone = KW_ON && PEOPLE.some(function (p) { return (data.showsBy[p.id] || []).length; });
       $("shelf-section").classList.toggle("empty", !anyone && !on);
@@ -1508,6 +1512,11 @@
     ai = 0;
     zone = "updask";
     clearFocus();
+    if (BENTO && zone === "binputs") {
+      if (window.BentoTheme) window.BentoTheme.focusInput(window.BentoTheme.getInputIdx());
+      hero(null);
+      return;
+    }
     renderAsk();
   }
   function devExtend() {
@@ -2033,6 +2042,11 @@
     if (expanded) { expanded = false; renderGrid(); }
     zone = "grid";
     clearFocus();
+    if (BENTO && zone === "binputs") {
+      if (window.BentoTheme) window.BentoTheme.focusInput(window.BentoTheme.getInputIdx());
+      hero(null);
+      return;
+    }
   }
   // the PIN was right: this TV moves to the first grown up (the bridge checks the PIN again)
   function kidsUnlocked(kid, code) {
@@ -2094,7 +2108,13 @@
     // nobody has anything on the go: no empty box, the photo has the space (unless Now playing
     // is up at night). The people switcher stays: with nothing yet (Netflix tells Android nothing on
     // some TVs, issue #23) it is the only way to say who is watching before anything is played.
-    $("shelf-section").classList.toggle("empty", !anyone && !(NIGHT && npVisible()) && !CARDS.length);
+    $("shelf-section").classList.toggle("empty", !BENTO && !anyone && !(NIGHT && npVisible()) && !CARDS.length);
+    if (BENTO && !data.shows.length) {
+      data.shows = [
+        { id: "sample1", title: "Yellowstone", season: 5, episode: 8, progress: 0.65, backdrop: "backgrounds/water.jpg", app: { name: "Paramount+", package: "com.cbs.app" } },
+        { id: "sample2", title: "Severance", season: 2, episode: 1, progress: 0.35, backdrop: "backgrounds/fog.jpg", app: { name: "Apple TV", package: "com.apple.atve.androidtv.appletv" } }
+      ];
+    }
     // custom cards keep the row (and its heading) even with Keep watching switched off
     document.documentElement.classList.toggle("kw-off", !KW_ON && !CARDS.length);
     $("shelf-title").textContent = t(data.shows.length || !CARDS.length ? "keep_watching" : "custom_cards");
@@ -2107,7 +2127,7 @@
       addCards(track);
       return;
     }
-    if (NIGHT) {
+    if (NIGHT || BENTO) {
       // lock screen notifications: glass cards, three in view, the row slides past the third
       track.innerHTML = data.shows.map(function (it) {
         var art = slim(it.backdrop || it.poster), pkg = it.app && it.app.package;
@@ -2158,7 +2178,7 @@
         parent.appendChild(n);
         return n;
       };
-      if (NIGHT) {
+      if (NIGHT || BENTO) {
         el.className = "tile ncard ccard";
         if (img) { img.className = "thumb"; el.appendChild(img); }
         var tx = document.createElement("div");
@@ -2292,7 +2312,7 @@
   }
 
   function gridList() {
-    if (NIGHT) return dockList();
+    if (NIGHT || BENTO) return dockList();
     var apps = shownApps().filter(function (a) { return a.package !== SETTINGS_PKG; });
     var list = apps.filter(function (a) { return !tucked(a); });
     var extra = apps.filter(tucked);
@@ -2689,7 +2709,7 @@
     document.documentElement.classList.toggle("expanded", expanded);
     document.documentElement.classList.toggle("lifting", !!lift);
     gridItems = gridList();
-    if (NIGHT) {
+    if (NIGHT || BENTO) {
       // the dock is as wide as what is in it; More apps uses all twelve columns
       GRID_COLS = expanded ? 12 : Math.max(1, Math.min(12, gridItems.length));
       $("grid").style.gridTemplateColumns = "repeat(" + GRID_COLS + ", 7rem)";
@@ -2734,6 +2754,7 @@
   // ---------------- focus ----------------
   function clearFocus() {
     shelfEls.concat(gridEls, quickEls).forEach(function (el) { if (el) el.classList.remove("focus"); });
+    if (window.BentoTheme) window.BentoTheme.clearInputFocus();
     $("people").classList.remove("focus");
     Array.prototype.forEach.call($("people").children, function (el) { el.classList.remove("focus"); });
   }
@@ -2763,6 +2784,11 @@
     if (zone === "smart") { window.smartHome.paint(); return; }
     if (zone === "ambient") { renderAmbientMusic(); return; }
     clearFocus();
+    if (BENTO && zone === "binputs") {
+      if (window.BentoTheme) window.BentoTheme.focusInput(window.BentoTheme.getInputIdx());
+      hero(null);
+      return;
+    }
     renderHint();
     if (npVisible()) renderNp();   // its buttons carry the focus only while zone is "np"
     if (zone === "gear") { if (gridEls[g]) gridEls[g].classList.add("focus"); renderGear(); return; }
@@ -2861,6 +2887,29 @@
     }
     // Night with More apps open: the cards step aside, so up and down skip them
     var cards = NIGHT && expanded ? [] : shelfEls;
+    if (BENTO && zone === "binputs") {
+      var inEls = window.BentoTheme ? window.BentoTheme.getInputs() : [];
+      var curI = window.BentoTheme ? window.BentoTheme.getInputIdx() : 0;
+      if (dx) {
+        var nxtI = Math.max(0, Math.min(inEls.length - 1, curI + dx));
+        if (window.BentoTheme) window.BentoTheme.focusInput(nxtI);
+      } else if (dy < 0) {
+        if (cards.length) {
+          zone = "shelf";
+          s = 0;
+          if (window.BentoTheme) window.BentoTheme.clearInputFocus();
+          paintFocus();
+        }
+      } else if (dy > 0) {
+        if (gridEls.length) {
+          zone = "grid";
+          g = 0;
+          if (window.BentoTheme) window.BentoTheme.clearInputFocus();
+          paintFocus();
+        }
+      }
+      return;
+    }
     if (zone === "menu") {
       if (dx || dy) menuI = Math.max(0, Math.min(SLEEP_CHOICES.length - 1, menuI + (dy || dx)));
       paintFocus();
@@ -2877,7 +2926,7 @@
     }
     if (zone === "np") {
       var maxNp = Math.max(0, npButtons().length - 1);
-      if (NIGHT) {
+      if (NIGHT || BENTO) {
         // the first card of the row: right past the last button goes on to the shows
         if (dx > 0 && npI === maxNp) { if (cards.length) { zone = "shelf"; s = 0; } }
         else if (dx) npI = Math.max(0, Math.min(maxNp, npI + dx));
@@ -2919,6 +2968,21 @@
         pi = Math.max(0, Math.min(PEOPLE.length - 1, pi + dx));
       } else if (dy > 0) zone = NIGHT && npReach() ? "np" : cards.length ? "shelf" : "grid";
     } else if (zone === "shelf") {
+      if (BENTO) {
+        if (dx) s = Math.max(0, Math.min(shelfEls.length - 1, s + dx));
+        else if (dy > 0) {
+          var inEls = window.BentoTheme ? window.BentoTheme.getInputs() : [];
+          if (inEls.length) {
+            zone = "binputs";
+            if (window.BentoTheme) window.BentoTheme.focusInput(0);
+          } else if (gridEls.length) {
+            zone = "grid";
+            g = 0;
+          }
+        }
+        paintFocus();
+        return;
+      }
       if (dx < 0 && s === 0 && NIGHT && npReach()) { zone = "np"; npI = Math.max(0, npButtons().length - 1); }
       else if (dx) s = Math.max(0, Math.min(shelfEls.length - 1, s + dx));
       else if (dy < 0) { if (peopleOn()) toPeople(); else if (!NIGHT && npReach()) zone = "np"; else if (hasQuick()) { zone = "quick"; qi = 0; } }
@@ -2934,6 +2998,19 @@
         var nx = g + dx;
         if (nx >= 0 && nx < gridEls.length && Math.floor(nx / GRID_COLS) === row) g = nx;
       } else if (dy < 0 && row === 0) {
+        if (BENTO) {
+          var inEls = window.BentoTheme ? window.BentoTheme.getInputs() : [];
+          if (inEls.length) {
+            zone = "binputs";
+            if (window.BentoTheme) window.BentoTheme.focusInput(0);
+            paintFocus();
+            return;
+          } else if (cards.length) {
+            zone = "shelf";
+            paintFocus();
+            return;
+          }
+        }
         if (cards.length) zone = "shelf";
         else if (npReach()) {
           if (AMBIENT_MUSIC && music) {
@@ -3078,6 +3155,7 @@
   function activate() {
     touched = true;
     if (zone === "settings") { setActivate(); return; }
+    if (BENTO && zone === "binputs") { if (window.BentoTheme) window.BentoTheme.activateInput(window.BentoTheme.getInputIdx()); return; }
     if (zone === "smart") { window.smartHome.ok(); return; }
     if (zone === "gear") { if (gi === 0) openSettings(); else openTvSettings(); return; }
     if (zone === "appmenu") { doAppMenu(); return; }
@@ -3279,6 +3357,11 @@
     if (window.AmbientWeather) window.AmbientWeather.pause();
     SET.col = "secs"; SET.sec = 0; SET.ri = 0; SET.keyFocus = null; SET.sub = null; SET.lift = null; SET.confirm = null; SET.msg = "";
     clearFocus();
+    if (BENTO && zone === "binputs") {
+      if (window.BentoTheme) window.BentoTheme.focusInput(window.BentoTheme.getInputIdx());
+      hero(null);
+      return;
+    }
     $("settings").classList.add("on");
     document.documentElement.classList.add("setting");
     renderSettings();
@@ -4017,6 +4100,11 @@
     askKind = "upd";
     zone = "updask"; ai = 0;
     clearFocus();
+    if (BENTO && zone === "binputs") {
+      if (window.BentoTheme) window.BentoTheme.focusInput(window.BentoTheme.getInputIdx());
+      hero(null);
+      return;
+    }
     renderAsk();
   }
   function askRows() {
@@ -4087,6 +4175,11 @@
     if (homeState() !== "ask") return;
     askKind = "home"; zone = "updask"; ai = 0;
     clearFocus();
+    if (BENTO && zone === "binputs") {
+      if (window.BentoTheme) window.BentoTheme.focusInput(window.BentoTheme.getInputIdx());
+      hero(null);
+      return;
+    }
     renderAsk();
   }
   function homeAnswered(held) {
@@ -4831,7 +4924,7 @@
     mark("app-start");
     clock();
     setInterval(clock, 15000);
-    if (NIGHT) {
+    if (NIGHT || BENTO) {
       if (window.AmbientWeather) {
         window.AmbientWeather.init($("weather-canvas"), $("ambient-lighting"));
         ambientSync();

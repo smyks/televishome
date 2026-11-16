@@ -202,6 +202,8 @@
     every_min: "{n} minutes",
 
     look_head: "Look",
+    look_bento: "Ambient Bento",
+    look_bento_sub: "Dynamic celestial sky clock with 3-row frosted glass console",
     look_night: "Night scenes",
     look_night_sub: "A big glass clock, scenes taking turns",
     look_oled: "OLED Cinema",

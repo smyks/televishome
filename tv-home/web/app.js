@@ -2303,7 +2303,15 @@
   }
 
   function gridList() {
-    if (NIGHT || BENTO) return dockList();
+    if (BENTO) {
+      var arr = arrangeItems();
+      var first7 = arr.items.slice(0, 7);
+      if (arr.items.length > 7 && !STANDALONE) {
+        first7.push(moreItem());
+      }
+      return first7;
+    }
+    if (NIGHT) return dockList();
     var apps = shownApps().filter(function (a) { return a.package !== SETTINGS_PKG; });
     var list = apps.filter(function (a) { return !tucked(a); });
     var extra = apps.filter(tucked);
@@ -2700,7 +2708,11 @@
     document.documentElement.classList.toggle("expanded", expanded);
     document.documentElement.classList.toggle("lifting", !!lift);
     gridItems = gridList();
-    if (NIGHT || BENTO) {
+    if (BENTO) {
+      GRID_COLS = gridItems.length;
+      $("grid").style.gridTemplateColumns = "repeat(" + GRID_COLS + ", minmax(0, 1fr))";
+      $("grid").style.width = "100%";
+    } else if (NIGHT) {
       // the dock is as wide as what is in it; More apps uses all twelve columns
       GRID_COLS = expanded ? 12 : Math.max(1, Math.min(12, gridItems.length));
       $("grid").style.gridTemplateColumns = "repeat(" + GRID_COLS + ", 7rem)";
@@ -2810,7 +2822,7 @@
     if (zone === "shelf" && shelfEls[s]) {
       shelfEls[s].classList.add("focus");
       scrollShelf();
-      if (NIGHT) return;   // the cards carry the titles; the photo stays put under the clock
+      if (NIGHT || BENTO) return;   // the cards carry the titles; the photo stays put under the clock
       var cc = cardAt(s);
       if (cc) {   // a custom card: its title and line at the top, the photo stays (its picture may be small)
         hero({ title: cc.title, app: cc.subtitle ? { name: cc.subtitle } : null });
@@ -2873,28 +2885,67 @@
     }
     // Night with More apps open: the cards step aside, so up and down skip them
     var cards = NIGHT && expanded ? [] : shelfEls;
-    if (BENTO && zone === "binputs") {
+    if (BENTO) {
       var inEls = window.BentoTheme ? window.BentoTheme.getInputs() : [];
       var curI = window.BentoTheme ? window.BentoTheme.getInputIdx() : 0;
-      if (dx) {
-        var nxtI = Math.max(0, Math.min(inEls.length - 1, curI + dx));
-        if (window.BentoTheme) window.BentoTheme.focusInput(nxtI);
-      } else if (dy < 0) {
-        if (cards.length) {
-          zone = "shelf";
-          s = 0;
-          if (window.BentoTheme) window.BentoTheme.clearInputFocus();
-          paintFocus();
-        }
-      } else if (dy > 0) {
-        if (gridEls.length) {
-          zone = "grid";
-          g = 0;
-          if (window.BentoTheme) window.BentoTheme.clearInputFocus();
-          paintFocus();
-        }
+
+      if (zone !== "shelf" && zone !== "binputs" && zone !== "grid") {
+        zone = "grid";
       }
-      return;
+
+      if (zone === "shelf") {
+        if (dx) {
+          s = Math.max(0, Math.min(shelfEls.length - 1, s + dx));
+        } else if (dy > 0) {
+          if (inEls.length) {
+            zone = "binputs";
+            if (window.BentoTheme) window.BentoTheme.focusInput(Math.min(s, inEls.length - 1));
+          } else if (gridEls.length) {
+            zone = "grid";
+            g = Math.min(s, gridEls.length - 1);
+          }
+        }
+        paintFocus();
+        return;
+      }
+
+      if (zone === "binputs") {
+        if (dx) {
+          var nxtI = Math.max(0, Math.min(inEls.length - 1, curI + dx));
+          if (window.BentoTheme) window.BentoTheme.focusInput(nxtI);
+        } else if (dy < 0) {
+          if (shelfEls.length) {
+            zone = "shelf";
+            s = Math.min(curI, shelfEls.length - 1);
+            if (window.BentoTheme) window.BentoTheme.clearInputFocus();
+          }
+        } else if (dy > 0) {
+          if (gridEls.length) {
+            zone = "grid";
+            g = Math.min(curI, gridEls.length - 1);
+            if (window.BentoTheme) window.BentoTheme.clearInputFocus();
+          }
+        }
+        paintFocus();
+        return;
+      }
+
+      if (zone === "grid") {
+        if (dx) {
+          g = Math.max(0, Math.min(gridEls.length - 1, g + dx));
+        } else if (dy < 0) {
+          if (inEls.length) {
+            zone = "binputs";
+            if (window.BentoTheme) window.BentoTheme.focusInput(Math.min(g, inEls.length - 1));
+          } else if (shelfEls.length) {
+            zone = "shelf";
+            s = Math.min(g, shelfEls.length - 1);
+          }
+        }
+        // dy > 0: do nothing in Bento (single row dock, no vertical jumping or extra scroll)
+        paintFocus();
+        return;
+      }
     }
     if (zone === "menu") {
       if (dx || dy) menuI = Math.max(0, Math.min(SLEEP_CHOICES.length - 1, menuI + (dy || dx)));
@@ -4969,7 +5020,7 @@
 
   if (MOCK || PREVIEW) {
     var sc = document.createElement("script");
-    sc.src = "mock.js?t=1731773000";
+    sc.src = "mock.js?t=1731778000";
     sc.onload = start;
     document.head.appendChild(sc);
   } else {

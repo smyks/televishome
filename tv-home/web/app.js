@@ -2787,6 +2787,11 @@
     if (zone === "smart") { window.smartHome.paint(); return; }
     if (zone === "ambient") { renderAmbientMusic(); return; }
     clearFocus();
+    if (BENTO && zone === "binputs") {
+      if (window.BentoTheme) window.BentoTheme.focusInput(window.BentoTheme.getInputIdx());
+      hero(null);
+      return;
+    }
     renderHint();
     if (npVisible()) renderNp();   // its buttons carry the focus only while zone is "np"
     if (zone === "gear") { if (gridEls[g]) gridEls[g].classList.add("focus"); renderGear(); return; }

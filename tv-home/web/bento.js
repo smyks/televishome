@@ -52,7 +52,7 @@
       orbY = 48 - Math.sin(p * Math.PI * 0.5) * 22; // rises from 48% to 26%
       orbColor = "rgba(255, 215, 110, 0.95)";
       orbGlow = "rgba(255, 170, 60, 0.65)";
-      skyGradient = "linear-gradient(180deg, #6ba5d8 0%, #b8cde4 35%, #f6c09a 70%, #fbe3b5 100%)";
+      skyGradient = "radial-gradient(ellipse 100% 80% at 25% 40%, rgba(255, 185, 100, 0.6) 0%, rgba(230, 140, 150, 0.4) 40%, transparent 75%), linear-gradient(180deg, #3d6a9a 0%, #6892be 25%, #d4957e 55%, #f5be7e 85%, #f7e0b5 100%)";
       ambientBleed = "rgba(240, 165, 110, 0.22)";
       focusGlow = "rgba(255, 180, 80, 0.45)";
       textColor = "#1c222c";
@@ -64,7 +64,7 @@
       orbY = 24 - Math.sin(p * Math.PI) * 10; // high arc ~14% to 24%
       orbColor = "rgba(255, 240, 140, 0.98)";
       orbGlow = "rgba(255, 200, 70, 0.6)";
-      skyGradient = "linear-gradient(180deg, #2a88e6 0%, #68b3f4 40%, #b2dbfa 75%, #edf5fd 100%)";
+      skyGradient = "radial-gradient(ellipse 110% 90% at 50% 20%, rgba(255, 255, 220, 0.5) 0%, rgba(140, 205, 255, 0.35) 45%, transparent 80%), linear-gradient(180deg, #186ac5 0%, #3a8fe2 30%, #7ec2f8 65%, #c8e7fc 100%)";
       ambientBleed = "rgba(50, 136, 230, 0.2)";
       focusGlow = "rgba(60, 150, 245, 0.45)";
       textColor = "#151b24";
@@ -76,7 +76,7 @@
       orbY = 24 + Math.sin(p * Math.PI * 0.5) * 22; // sinks from 24% to 46%
       orbColor = "rgba(255, 165, 40, 0.96)";
       orbGlow = "rgba(235, 95, 20, 0.7)";
-      skyGradient = "linear-gradient(180deg, #c4571e 0%, #dc7b32 30%, #e8a85a 65%, #dcd69a 100%)";
+      skyGradient = "radial-gradient(ellipse 95% 85% at 75% 25%, rgba(255, 130, 45, 0.75) 0%, rgba(220, 75, 35, 0.45) 40%, rgba(140, 40, 35, 0.2) 65%, transparent 85%), linear-gradient(180deg, #ba3e18 0%, #d86224 25%, #e68d3b 50%, #e8b35c 75%, #ded088 100%)";
       ambientBleed = "rgba(235, 110, 35, 0.24)";
       focusGlow = "rgba(245, 145, 35, 0.5)";
       textColor = "#1a1c22";
@@ -88,7 +88,7 @@
       orbY = 42 - Math.sin(pNight * Math.PI) * 18;
       orbColor = "rgba(242, 246, 255, 0.95)";
       orbGlow = "rgba(160, 190, 255, 0.45)";
-      skyGradient = "linear-gradient(180deg, #090a14 0%, #121524 35%, #1a1a32 70%, #201e38 100%)";
+      skyGradient = "radial-gradient(ellipse 100% 80% at 50% 30%, rgba(120, 150, 255, 0.25) 0%, rgba(60, 70, 140, 0.2) 45%, transparent 80%), linear-gradient(180deg, #05060d 0%, #0d1020 30%, #151833 65%, #1e1d3e 100%)";
       ambientBleed = "rgba(140, 170, 255, 0.12)";
       focusGlow = "rgba(160, 195, 255, 0.35)";
       textColor = "#f4f6fa";

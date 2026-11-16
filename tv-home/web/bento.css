@@ -1,5 +1,6 @@
 /* ==========================================================================
-   BENTO THEME: Two Floating Curved Windows with Compact Glass Console
+   BENTO THEME: Dual Curved Floating Windows with Refined Glass Console
+   Strict 4px outer screen margins, 12px app bar spacing, rich color depth.
    Optimal 60 FPS TV performance: zero CPU reflows, hardware accelerated CSS.
    ========================================================================== */
 
@@ -8,11 +9,11 @@
   --bento-orb-y: 28%;
   --bento-orb-color: rgba(255, 175, 45, 0.95);
   --bento-orb-glow: rgba(235, 105, 25, 0.65);
-  --bento-sky-gradient: radial-gradient(ellipse 95% 85% at 75% 25%, rgba(255, 130, 45, 0.75) 0%, rgba(220, 75, 35, 0.45) 40%, rgba(140, 40, 35, 0.2) 65%, transparent 85%), linear-gradient(180deg, #ba3e18 0%, #d86224 25%, #e68d3b 50%, #e8b35c 75%, #ded088 100%);
+  --bento-sky-gradient: radial-gradient(circle at 18% 28%, rgba(65, 120, 240, 0.5) 0%, transparent 55%), radial-gradient(circle at 82% 75%, rgba(165, 55, 215, 0.45) 0%, transparent 60%), radial-gradient(circle at 50% 90%, rgba(20, 180, 160, 0.35) 0%, transparent 50%), linear-gradient(135deg, #0c1228 0%, #1e1238 45%, #09202a 100%);
   --bento-ambient-bleed: rgba(235, 110, 35, 0.22);
-  --bento-focus-glow: rgba(245, 150, 40, 0.5);
-  --bento-text-color: #1a1c22;
-  --bento-console-bg: linear-gradient(180deg, rgba(28, 31, 38, 0.88) 0%, rgba(16, 18, 22, 0.95) 100%);
+  --bento-focus-glow: rgba(255, 255, 255, 0.45);
+  --bento-text-color: #ffffff;
+  --bento-console-bg: linear-gradient(180deg, rgba(26, 29, 36, 0.92) 0%, rgba(15, 17, 22, 0.96) 100%);
 }
 
 /* Base Bento visibility switches & Dark Canvas */
@@ -39,7 +40,7 @@ html.theme-bento .weather-canvas {
 
 /* ==========================================================================
    WINDOW 1 (TOP BENTO BOX): CELESTIAL SKY, CLOCK & WEATHER
-   Curved window floating with margins & slight gap to bottom window
+   Curved window floating with strict 4px outer screen margin
    ========================================================================== */
 .bento-top-box {
   display: none;
@@ -48,11 +49,12 @@ html.theme-bento .weather-canvas {
 html.theme-bento .bento-top-box {
   display: block !important;
   position: fixed !important;
-  top: 16px !important;
-  left: 20px !important;
-  right: 20px !important;
-  height: calc(65vh - 22px) !important;
-  border-radius: 28px !important;
+  top: 4px !important;
+  left: 4px !important;
+  right: 4px !important;
+  bottom: 278px !important;
+  height: auto !important;
+  border-radius: 20px !important;
   overflow: hidden !important;
   border: 1px solid rgba(255, 255, 255, 0.12) !important;
   box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4) !important;
@@ -86,12 +88,12 @@ html.theme-bento .bento-top-box {
 }
 
 .bento-orb {
-  width: 280px;
-  height: 280px;
+  width: 290px;
+  height: 290px;
   border-radius: 50%;
   background: var(--bento-orb-color);
   box-shadow: 0 0 160px 80px var(--bento-orb-glow);
-  filter: blur(54px);
+  filter: blur(52px);
   animation: bentoOrbBreathe 5.2s ease-in-out infinite alternate;
   will-change: transform, opacity, filter, box-shadow;
 }
@@ -134,7 +136,7 @@ html.theme-bento .bento-top-box {
   display: flex !important;
   justify-content: space-between !important;
   align-items: flex-end !important;
-  padding: 36px 52px !important;
+  padding: 30px 42px !important;
   box-sizing: border-box !important;
   color: var(--bento-text-color) !important;
   transition: color 2s ease !important;
@@ -148,7 +150,7 @@ html.theme-bento .bento-top-box {
 }
 
 .bento-date {
-  font-size: 22px !important;
+  font-size: 20px !important;
   font-weight: 400 !important;
   letter-spacing: -0.2px !important;
   margin-bottom: 4px !important;
@@ -156,20 +158,20 @@ html.theme-bento .bento-top-box {
 }
 
 .bento-time {
-  font-size: 92px !important;
+  font-size: 88px !important;
   font-weight: 300 !important;
   line-height: 0.95 !important;
-  letter-spacing: -3px !important;
+  letter-spacing: -2.5px !important;
   font-variant-numeric: tabular-nums !important;
   display: flex !important;
   align-items: baseline !important;
 }
 
 .bento-time small {
-  font-size: 28px !important;
+  font-size: 26px !important;
   font-weight: 300 !important;
   letter-spacing: 0 !important;
-  margin-left: 10px !important;
+  margin-left: 8px !important;
   opacity: 0.60 !important;
 }
 
@@ -182,21 +184,21 @@ html.theme-bento .bento-top-box {
 }
 
 .bento-temp {
-  font-size: 44px !important;
+  font-size: 38px !important;
   font-weight: 300 !important;
   line-height: 1 !important;
-  letter-spacing: -1.5px !important;
-  margin-bottom: 2px !important;
+  letter-spacing: -1px !important;
+  margin-bottom: 3px !important;
 }
 
 .bento-cond {
-  font-size: 16px !important;
+  font-size: 15px !important;
   font-weight: 400 !important;
   opacity: 0.70 !important;
 }
 
 .bento-place {
-  font-size: 14px !important;
+  font-size: 13px !important;
   font-weight: 400 !important;
   opacity: 0.50 !important;
   margin-top: 2px !important;
@@ -204,42 +206,42 @@ html.theme-bento .bento-top-box {
 
 /* ==========================================================================
    WINDOW 2 (BOTTOM BENTO BOX): 3-ROW FROSTED GLASS CONSOLE
-   Curved window floating with margins & balanced padding
+   Curved window floating with strict 4px outer screen margin & compact height
    ========================================================================== */
 html.theme-bento main.home {
   position: fixed !important;
-  top: calc(65vh + 6px) !important;
-  bottom: 16px !important;
-  left: 20px !important;
-  right: 20px !important;
-  height: auto !important;
+  bottom: 4px !important;
+  left: 4px !important;
+  right: 4px !important;
+  top: auto !important;
+  height: 270px !important;
   z-index: 10 !important;
   background: var(--bento-console-bg) !important;
   backdrop-filter: blur(40px) saturate(160%) !important;
   -webkit-backdrop-filter: blur(40px) saturate(160%) !important;
   border: 1px solid rgba(255, 255, 255, 0.12) !important;
-  border-radius: 30px !important;
+  border-radius: 20px !important;
   box-shadow: 0 16px 48px rgba(0, 0, 0, 0.5) !important;
   box-sizing: border-box !important;
-  padding: 24px 36px 26px 36px !important;
+  padding: 20px 32px 20px 32px !important;
   display: flex !important;
   flex-direction: column !important;
   justify-content: space-between !important;
   margin: 0 !important;
   opacity: 1 !important;
   transform: none !important;
-  gap: 16px !important;
+  gap: 14px !important;
   transition: box-shadow 2s ease, border-color 2s ease !important;
 }
 
-/* ROW 1: CONTINUE WATCHING CHIPS (EXPLICIT STYLING OVERRIDING NCARD) */
+/* ROW 1: CONTINUE WATCHING CHIPS */
 html.theme-bento .shelf {
   position: relative !important;
   top: auto !important;
   left: auto !important;
   right: auto !important;
   bottom: auto !important;
-  height: 68px !important;
+  height: 76px !important;
   margin: 0 !important;
   padding: 0 !important;
   display: flex !important;
@@ -269,16 +271,16 @@ html.theme-bento .shelf-clip {
 html.theme-bento .shelf-track {
   display: flex !important;
   align-items: center !important;
-  gap: 16px !important;
+  gap: 14px !important;
   height: 100% !important;
 }
 
 html.theme-bento .shelf-track .tile.ncard {
-  height: 68px !important;
-  min-width: 260px !important;
-  max-width: 320px !important;
-  background: rgba(45, 49, 58, 0.8) !important;
-  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  height: 76px !important;
+  min-width: 280px !important;
+  max-width: 360px !important;
+  background: rgba(255, 255, 255, 0.08) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
   border-radius: 16px !important;
   display: flex !important;
   flex-direction: row !important;
@@ -299,10 +301,10 @@ html.theme-bento .shelf-track .tile.ncard {
 }
 
 html.theme-bento .shelf-track .ncard .thumb {
-  width: 100px !important;
-  height: 68px !important;
-  min-width: 100px !important;
-  max-width: 100px !important;
+  width: 114px !important;
+  height: 76px !important;
+  min-width: 114px !important;
+  max-width: 114px !important;
   object-fit: cover !important;
   border-radius: 15px 0 0 15px !important;
   flex-shrink: 0 !important;
@@ -310,7 +312,7 @@ html.theme-bento .shelf-track .ncard .thumb {
 }
 
 html.theme-bento .shelf-track .ncard .t {
-  padding: 6px 14px !important;
+  padding: 8px 16px !important;
   display: flex !important;
   flex-direction: column !important;
   justify-content: center !important;
@@ -327,8 +329,8 @@ html.theme-bento .shelf-track .ncard .nap {
   display: flex !important;
   align-items: center !important;
   gap: 5px !important;
-  font-size: 10px !important;
-  line-height: 12px !important;
+  font-size: 11px !important;
+  line-height: 13px !important;
   font-weight: 600 !important;
   text-transform: uppercase !important;
   letter-spacing: 0.5px !important;
@@ -348,8 +350,8 @@ html.theme-bento .shelf-track .ncard .nap img {
 
 html.theme-bento .shelf-track .ncard b {
   display: block !important;
-  font-size: 15px !important;
-  line-height: 18px !important;
+  font-size: 16px !important;
+  line-height: 20px !important;
   font-weight: 600 !important;
   color: #ffffff !important;
   white-space: nowrap !important;
@@ -361,8 +363,8 @@ html.theme-bento .shelf-track .ncard b {
 html.theme-bento .shelf-track .ncard i {
   display: block !important;
   font-style: normal !important;
-  font-size: 12px !important;
-  line-height: 15px !important;
+  font-size: 13px !important;
+  line-height: 16px !important;
   color: rgba(255, 255, 255, 0.65) !important;
   white-space: nowrap !important;
   overflow: hidden !important;
@@ -370,21 +372,26 @@ html.theme-bento .shelf-track .ncard i {
   margin: 1px 0 0 0 !important;
 }
 
-html.theme-bento .shelf-track .ncard .nbar {
+/* White 50% opacity progress bar */
+html.theme-bento .shelf-track .ncard .nbar,
+html.theme-bento .shelf-track .tile .nbar,
+html.theme-bento .shelf-track .tile .bar {
   position: absolute !important;
   bottom: 0 !important;
   left: 0 !important;
   right: 0 !important;
-  height: 3px !important;
+  height: 4px !important;
   margin: 0 !important;
   border-radius: 0 !important;
   background: rgba(255, 255, 255, 0.15) !important;
 }
 
-html.theme-bento .shelf-track .ncard .nbar i {
+html.theme-bento .shelf-track .ncard .nbar i,
+html.theme-bento .shelf-track .tile .nbar i,
+html.theme-bento .shelf-track .tile .bar i {
   display: block !important;
   height: 100% !important;
-  background: #ff9f0a !important;
+  background: rgba(255, 255, 255, 0.5) !important;
   margin: 0 !important;
   border-radius: 0 2px 2px 0 !important;
 }
@@ -407,8 +414,8 @@ html.theme-bento .bento-inputs-row {
   position: relative !important;
   display: flex !important;
   align-items: center !important;
-  height: 42px !important;
-  gap: 14px !important;
+  height: 40px !important;
+  gap: 12px !important;
   width: 100% !important;
   margin: 0 !important;
   padding: 0 !important;
@@ -423,8 +430,8 @@ html.theme-bento .bento-inputs-row {
   height: 40px !important;
   padding: 0 20px !important;
   border-radius: 12px !important;
-  background: rgba(45, 49, 58, 0.8) !important;
-  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  background: rgba(255, 255, 255, 0.08) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
   color: rgba(255, 255, 255, 0.9) !important;
   font-size: 14px !important;
   font-weight: 500 !important;
@@ -440,8 +447,8 @@ html.theme-bento .bento-inputs-row {
 }
 
 .bento-input-btn svg {
-  width: 17px !important;
-  height: 17px !important;
+  width: 16px !important;
+  height: 16px !important;
   fill: none !important;
   stroke: currentColor !important;
   stroke-width: 1.8 !important;
@@ -458,7 +465,7 @@ html.theme-bento .bento-inputs-row {
   z-index: 5 !important;
 }
 
-/* ROW 3: FULL WIDTH APPS DOCK (NORMAL SQUIRCLE ICONS) */
+/* ROW 3: APPS DOCK (EXACT 12PX GAP BETWEEN ICONS) */
 html.theme-bento .apps {
   position: relative !important;
   top: auto !important;
@@ -466,7 +473,7 @@ html.theme-bento .apps {
   right: auto !important;
   bottom: auto !important;
   transform: none !important;
-  height: 72px !important;
+  height: 64px !important;
   margin: 0 !important;
   padding: 0 !important;
   width: 100% !important;
@@ -480,26 +487,27 @@ html.theme-bento .apps .hint {
 }
 
 html.theme-bento .grid {
-  display: grid !important;
-  grid-template-columns: repeat(8, 1fr) !important;
-  gap: 16px !important;
-  width: 100% !important;
-  height: 100% !important;
+  display: flex !important;
+  flex-direction: row !important;
   align-items: center !important;
+  justify-content: flex-start !important;
+  gap: 12px !important;
+  width: auto !important;
+  height: 100% !important;
   margin: 0 !important;
   padding: 0 !important;
   overflow: visible !important;
 }
 
-/* App Tile: Normal Squircles (Centered in Column Slot) */
+/* App Tile: Normal Squircles with exact 12px gap */
 html.theme-bento .grid .tile {
-  width: 68px !important;
-  height: 68px !important;
-  min-width: 68px !important;
-  max-width: 68px !important;
-  margin: 0 auto !important;
-  border-radius: 18px !important;
-  background: rgba(36, 40, 48, 0.85) !important;
+  width: 64px !important;
+  height: 64px !important;
+  min-width: 64px !important;
+  max-width: 64px !important;
+  margin: 0 !important;
+  border-radius: 16px !important;
+  background: rgba(255, 255, 255, 0.07) !important;
   border: 1px solid rgba(255, 255, 255, 0.1) !important;
   display: flex !important;
   align-items: center !important;
@@ -507,7 +515,7 @@ html.theme-bento .grid .tile {
   cursor: pointer !important;
   position: relative !important;
   box-sizing: border-box !important;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35) !important;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35) !important;
   transform: scale(1) translateZ(0) !important;
   transition: transform 0.2s cubic-bezier(0.2, 0.9, 0.3, 1),
               background 0.2s ease,
@@ -522,20 +530,20 @@ html.theme-bento .grid .tile .face {
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
-  border-radius: 17px !important;
+  border-radius: 15px !important;
   overflow: hidden !important;
 }
 
 html.theme-bento .grid .tile .face img {
-  width: 50px !important;
-  height: 50px !important;
+  width: 44px !important;
+  height: 44px !important;
   object-fit: contain !important;
-  border-radius: 12px !important;
+  border-radius: 10px !important;
 }
 
 html.theme-bento .grid .tile .face.tool svg {
-  width: 28px !important;
-  height: 28px !important;
+  width: 26px !important;
+  height: 26px !important;
   stroke: #ffffff !important;
   stroke-width: 1.8 !important;
   fill: none !important;
@@ -547,9 +555,9 @@ html.theme-bento .grid .tile .label {
 
 /* Focus State: Row 3 */
 html.theme-bento .grid .tile.focus {
-  transform: scale(1.15) translateY(-3px) translateZ(0) !important;
+  transform: scale(1.14) translateY(-3px) translateZ(0) !important;
   border-color: #ffffff !important;
-  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.65), 0 0 20px var(--bento-focus-glow) !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.65), 0 0 18px var(--bento-focus-glow) !important;
   background: rgba(60, 68, 82, 0.95) !important;
   z-index: 10 !important;
 }

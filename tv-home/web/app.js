@@ -2710,8 +2710,10 @@
     gridItems = gridList();
     if (BENTO) {
       GRID_COLS = gridItems.length;
-      $("grid").style.gridTemplateColumns = "repeat(" + GRID_COLS + ", minmax(0, 1fr))";
-      $("grid").style.width = "100%";
+      $("grid").style.display = "flex";
+      $("grid").style.gap = "12px";
+      $("grid").style.width = "auto";
+      $("grid").style.gridTemplateColumns = "";
     } else if (NIGHT) {
       // the dock is as wide as what is in it; More apps uses all twelve columns
       GRID_COLS = expanded ? 12 : Math.max(1, Math.min(12, gridItems.length));

@@ -52,7 +52,7 @@
       orbY = 48 - Math.sin(p * Math.PI * 0.5) * 22; // rises from 48% to 26%
       orbColor = "rgba(255, 215, 110, 0.95)";
       orbGlow = "rgba(255, 170, 60, 0.65)";
-      skyGradient = "radial-gradient(ellipse 100% 80% at 25% 40%, rgba(255, 185, 100, 0.6) 0%, rgba(230, 140, 150, 0.4) 40%, transparent 75%), linear-gradient(180deg, #3d6a9a 0%, #6892be 25%, #d4957e 55%, #f5be7e 85%, #f7e0b5 100%)";
+      skyGradient = "radial-gradient(circle at 25% 40%, rgba(255, 170, 90, 0.7) 0%, transparent 55%), radial-gradient(circle at 75% 25%, rgba(180, 100, 220, 0.5) 0%, transparent 60%), radial-gradient(circle at 50% 85%, rgba(240, 130, 140, 0.4) 0%, transparent 50%), linear-gradient(145deg, #324e7b 0%, #5d4a7a 35%, #a6526e 65%, #df8b6a 100%)";
       ambientBleed = "rgba(240, 165, 110, 0.22)";
       focusGlow = "rgba(255, 180, 80, 0.45)";
       textColor = "#1c222c";
@@ -64,7 +64,7 @@
       orbY = 24 - Math.sin(p * Math.PI) * 10; // high arc ~14% to 24%
       orbColor = "rgba(255, 240, 140, 0.98)";
       orbGlow = "rgba(255, 200, 70, 0.6)";
-      skyGradient = "radial-gradient(ellipse 110% 90% at 50% 20%, rgba(255, 255, 220, 0.5) 0%, rgba(140, 205, 255, 0.35) 45%, transparent 80%), linear-gradient(180deg, #186ac5 0%, #3a8fe2 30%, #7ec2f8 65%, #c8e7fc 100%)";
+      skyGradient = "radial-gradient(circle at 50% 20%, rgba(255, 255, 200, 0.6) 0%, transparent 55%), radial-gradient(circle at 15% 80%, rgba(0, 190, 230, 0.45) 0%, transparent 60%), radial-gradient(circle at 85% 75%, rgba(100, 140, 255, 0.4) 0%, transparent 60%), linear-gradient(150deg, #1d6ed8 0%, #3ca0e8 40%, #0db8c8 75%, #aee3f8 100%)";
       ambientBleed = "rgba(50, 136, 230, 0.2)";
       focusGlow = "rgba(60, 150, 245, 0.45)";
       textColor = "#151b24";
@@ -76,19 +76,19 @@
       orbY = 24 + Math.sin(p * Math.PI * 0.5) * 22; // sinks from 24% to 46%
       orbColor = "rgba(255, 165, 40, 0.96)";
       orbGlow = "rgba(235, 95, 20, 0.7)";
-      skyGradient = "radial-gradient(ellipse 95% 85% at 75% 25%, rgba(255, 130, 45, 0.75) 0%, rgba(220, 75, 35, 0.45) 40%, rgba(140, 40, 35, 0.2) 65%, transparent 85%), linear-gradient(180deg, #ba3e18 0%, #d86224 25%, #e68d3b 50%, #e8b35c 75%, #ded088 100%)";
+      skyGradient = "radial-gradient(circle at 75% 25%, rgba(255, 120, 30, 0.85) 0%, transparent 55%), radial-gradient(circle at 20% 75%, rgba(220, 50, 110, 0.5) 0%, transparent 60%), radial-gradient(circle at 50% 95%, rgba(245, 185, 50, 0.4) 0%, transparent 50%), linear-gradient(145deg, #c44015 0%, #d65525 35%, #b5225c 70%, #d49542 100%)";
       ambientBleed = "rgba(235, 110, 35, 0.24)";
       focusGlow = "rgba(245, 145, 35, 0.5)";
       textColor = "#1a1c22";
     }
-    // Phase 4: Night / Lunar Arc (19:30 -> 05:30) - Inverted & dark cosmic sky
+    // Phase 4: Night / Lunar Arc (19:30 -> 05:30) - Inverted & dark cosmic sky with rich color depth
     else {
       var pNight = ((h - 19.5 + 24) % 24) / 10.0;
       orbX = 14 + pNight * 72; // Lunar orb tracks 14% to 86% across screen
       orbY = 42 - Math.sin(pNight * Math.PI) * 18;
       orbColor = "rgba(242, 246, 255, 0.95)";
       orbGlow = "rgba(160, 190, 255, 0.45)";
-      skyGradient = "radial-gradient(ellipse 100% 80% at 50% 30%, rgba(120, 150, 255, 0.25) 0%, rgba(60, 70, 140, 0.2) 45%, transparent 80%), linear-gradient(180deg, #05060d 0%, #0d1020 30%, #151833 65%, #1e1d3e 100%)";
+      skyGradient = "radial-gradient(circle at 18% 28%, rgba(65, 120, 240, 0.5) 0%, transparent 55%), radial-gradient(circle at 82% 75%, rgba(165, 55, 215, 0.45) 0%, transparent 60%), radial-gradient(circle at 50% 90%, rgba(20, 180, 160, 0.35) 0%, transparent 50%), linear-gradient(135deg, #0c1228 0%, #1e1238 45%, #09202a 100%)";
       ambientBleed = "rgba(140, 170, 255, 0.12)";
       focusGlow = "rgba(160, 195, 255, 0.35)";
       textColor = "#f4f6fa";
